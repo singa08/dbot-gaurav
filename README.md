@@ -21,3 +21,4 @@ run the following commands:<br>
 pip install -r requirements.txt<br>
 python mybot.py
 
+<img width="2860" height="1594" alt="image" src="https://github.com/user-attachments/assets/e891e8ed-ba81-4d1b-a5ba-8ea7a981fb37" />
