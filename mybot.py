@@ -38,6 +38,20 @@ def call_dalle(description):
     image_url = response.data[0].url
     return image_url
 
+def call_openai_joke():
+    completion = openai_client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+             {
+                 "role": "user",
+                 "content": "Tell me a funny pirate joke.",
+            },
+        ]
+    )
+    joke = completion.choices[0].message.content
+    print(f"Generated Joke: {joke}")
+    return joke
+
 # List of pirate jokes
 pirate_jokes = [
     "Why did the pirate go to school? To improve his 'arrr'ithmetic!",
@@ -96,7 +110,12 @@ async def on_message(message):
             print(e)
 
     if message.content.startswith('$joke'):
-        joke = random.choice(pirate_jokes)
-        await message.channel.send(joke)
+        try:
+            joke = call_openai_joke()
+            await message.channel.send(joke)
+        except Exception as e:
+            print(f"OpenAI joke failed: {e}")
+            joke = random.choice(pirate_jokes)
+            await message.channel.send(f"Arrr, me joke generator be out! Here's one from me treasure: {joke}")
 
 client.run(DISCORD_TOKEN)
