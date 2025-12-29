@@ -81,12 +81,12 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$hello'):
+    if message.content.startswith('hello'):
         await message.channel.send('Hello!')
 
-    if message.content.startswith('$question'):
+    if message.content.startswith('question'):
         print(f"Message: {message.content}")                
-        message_content = message.content.split("$question")[1]
+        message_content = message.content.split("question")[1].strip()
         print(f"Question: {message_content}")    
         try:
             response = call_openai(message_content)   
@@ -97,10 +97,11 @@ async def on_message(message):
             await message.channel.send("Try again later.")
             print(e)
 
-    if message.content.startswith('$draw'):
-        desc = message.content.split('$draw')[1].strip()
+    if message.content.startswith('draw'):
+        desc = message.content.split("draw")[1].strip()
+        print(f"Drawing description: {desc}")
         if not desc:
-            await message.channel.send("Arrr, ye need to describe what to draw!")
+            await message.channel.send("Arrr, you need to describe what to draw!")
             return
         try:
             url = call_dalle(desc)
@@ -109,13 +110,13 @@ async def on_message(message):
             await message.channel.send("Try again later.")
             print(e)
 
-    if message.content.startswith('$joke'):
+    if message.content.startswith('joke'):
         try:
             joke = call_openai_joke()
             await message.channel.send(joke)
         except Exception as e:
             print(f"OpenAI joke failed: {e}")
             joke = random.choice(pirate_jokes)
-            await message.channel.send(f"Arrr, me joke generator be out! Here's one from me treasure: {joke}")
+            await message.channel.send(f"Arrr, i am not in touch with AI ! Here's one from me treasure: {joke}")
 
 client.run(DISCORD_TOKEN)
